@@ -1,0 +1,14 @@
+---
+interface Props {
+  bouton: string;
+  href?: string;
+}
+
+const { bouton, href } = Astro.props;
+const Tag = href ? 'a' : 'button';
+---
+<div class="flex items-start justify-start ml-5 ">
+  <Tag href={href} class="px-5 py-2 bg-blue-500/20 border-2 border-blue-500 rounded-xl font-bold text-exo text-white shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] transition-shadow">
+    {bouton}
+  </Tag>
+</div>

@@ -1,8 +1,67 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import Button from '../components/Button.astro';
+import Card from '../components/Card.astro';
 ---
 
-<Layout title="FlyTapFest - Festival de claquettes">
-  <Hero />
+<Layout title="FlyTapFest">
+  <Hero /> 
+  <section class="bg-black text-white py-20">
+   <h2 class="text-blue-600 text-start ml-5">Festival de claquettes</h2>
+    <p class=" text-start ml-5">Fusion entre claquettes traditionnelles et spectacle de drones lumineux</p>
+  </div>
+
+<div class="flex items-end justify-end mr-5 mt-5 align-items-end">
+  <img class="h-6"
+    src="/Icon-calendar.svg"    alt="Calendrier"
+    class="h-48 w-auto object-contain"/>
+    <p>6-7 juin 2026</p>
+</div>
+<div class="flex items-end justify-end align-items-end mr-5 mb-10">
+  <img class="h-6"
+    src="/Icon-ping.svg"  alt="localisation"
+    class="h-48 w-auto object-contain"/>
+    <p>Parc du Près-la-Rose, Montbéliard</p>
+</div>
+<Button bouton="Réservez mes billets" href="/billeterie" />
+
+<section class="bg-black mt-15">
+	<h3 class="text-start ml-5">Un festival entre ciel et terre</h3>
+	<p class="text-start ml-5 mt-5 mb-5">Le FlyTapFest est un événement unique qui marie l'art ancestral des claquettes avec la technologie moderne des drones lumineux pour créer un spectacle époustouflant.</p>
+	<Button bouton="En savoir plus" href="/infos"/>
+</section>
+
+<section class="bg-black mt-15 py-10">
+	<h3 class="text-center mb-5 text-white">Découvrir le festival</h3>
+  <div class="flex justify-center px-5 mt-5">
+    <Card
+      imageSrc="/drone.webp"
+      titre="Programme"
+      description="Découvrez tous les spectacles et performances de claquettes qui rythmeront le FlyTapFest. Des artistes exceptionnels vous attendent sur nos différentes scènes."
+      href="/programme.astro"
+    />
+  </div>
+</section>
+
+<section class="bg-black mt-5 py-10">
+  <div class="flex justify-center px-5">
+    <Card
+      imageSrc="/scene_princi.webp"
+      titre="Scènes"
+      description="Découvrez toutes les scènes sont situées dans le Parc du Près-la-Rose à Montbéliard."
+      href="/scene"
+    />
+  </div>
+</section>
+<section class="bg-black mt-5 py-10">
+  <div class="flex justify-center px-5">
+    <Card
+      imageSrc="/artistes.webp"
+      titre="Artistes"
+      description="Découvrez tous les artistes qui participeront au FlyTapFest."
+      href="/artistes"
+    />
+  </div>
+</section>
 </Layout>
