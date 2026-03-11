@@ -1,8 +1,113 @@
 ---
-import Hero from '../components/Hero.astro';
 import Layout from '../layouts/Layout.astro';
+
+const equipe = [
+  { role: "Direction Artistique", name: "Sophie Durand" },
+  { role: "Production", name: "Marc Lefebvre" },
+  { role: "Communication", name: "Julie Martin" },
+  { role: "Technique", name: "Thomas Bernard" },
+];
+
+const charte = [
+  {
+    title: "Innovation & Tradition",
+    text: "Créer des passerelles entre l'héritage culturel des claquettes et les technologies de pointe pour offrir une expérience artistique unique.",
+  },
+  {
+    title: "Accessibilité",
+    text: "Rendre la culture accessible à tous avec des tarifs adaptés et des infrastructures inclusives.",
+  },
+  {
+    title: "Développement durable",
+    text: "Minimiser notre impact environnemental grâce à l'utilisation de drones électriques et à une gestion responsable des déchets.",
+  },
+  {
+    title: "Excellence artistique",
+    text: "Présenter les meilleurs artistes internationaux dans un cadre exceptionnel au cœur du Parc du Près-la-Rose.",
+  },
+];
 ---
 
 <Layout title="Le Festival" heroTitle="Le Festival" heroDescription="Découvrez notre histoire et nos valeurs">
-    
+  <section class="bg-black text-white py-20">
+    <div class="container-grid items-stretch">
+      <div class="col-span-12 lg:col-span-6 flex flex-col">
+        <h2 class="font-exo text-4xl font-bold text-blue-600">Historique</h2>
+
+        <div class="mt-6 rounded-2xl border border-blue-900 bg-black px-4 py-5 shadow-[0_0_18px_rgba(37,99,235,0.08)] flex-1">
+          <p class="font-exo text-lg leading-relaxed text-zinc-400">
+            Créé en 2024, le FlyTapFest est né de la vision audacieuse de réunir deux mondes
+            apparemment opposés : la tradition séculaire des claquettes et l'innovation
+            technologique des drones lumineux. Depuis sa première édition, le festival s'est
+            imposé comme un événement culturel majeur de la région, attirant des milliers de
+            spectateurs venus découvrir ce spectacle unique au monde. L'édition 2026 promet
+            d'être encore plus spectaculaire avec des performances inédites et des
+            collaborations internationales.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-span-12 lg:col-span-6 flex flex-col">
+        <h2 class="font-exo text-4xl font-bold text-fuchsia-500">L'équipe</h2>
+
+        <div class="mt-8 space-y-3 flex-1 flex flex-col justify-between">
+          {equipe.map((member) => (
+            <div class="flex items-center justify-between gap-4 rounded-xl border border-fuchsia-600 bg-black px-4 py-3 shadow-[0_0_18px_rgba(236,72,153,0.1)]">
+              <p class="font-exo text-xl text-zinc-200">{member.role}</p>
+              <p class="font-exo text-xl text-zinc-400">{member.name}</p>
+            </div>
+          ))}
+        
+          <div class="rounded-2xl border border-blue-900 bg-[#10237a]/30 px-4 py-5 shadow-[0_0_18px_rgba(37,99,235,0.08)]">
+            <p class="font-exo text-lg leading-relaxed text-zinc-400">
+              Notre équipe technique compte plus de 50 professionnels dédiés à la réussite de
+              chaque édition.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-black text-white py-10">
+    <div class="container-grid">
+      <div class="col-span-12">
+        <h2 class="font-exo text-4xl font-bold text-violet-500">Notre charte</h2>
+
+        <div class="mt-8 rounded-2xl border border-violet-500 bg-black px-4 py-5">
+          <div class="space-y-10">
+            {charte.map((item) => (
+              <div>
+                <h3 class="font-exo text-2xl font-bold leading-tight text-zinc-100">
+                  {item.title}
+                </h3>
+                <p class="mt-2 font-exo text-base leading-relaxed text-zinc-400">
+                  {item.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-black text-white py-10">
+    <div class="container-grid">
+      <div class="col-span-12">
+        <div class="rounded-2xl border border-blue-800 bg-linear-to-b from-blue-950 to-fuchsia-950 px-5 py-6 text-center shadow-[0_0_18px_rgba(168,85,247,0.12)]">
+          <h2 class="font-exo text-3xl font-bold leading-none text-zinc-100">
+            Thématique 2026
+          </h2>
+          <p class="mt-2 font-exo text-xl font-semibold leading-none text-blue-500">
+            "Symbiose"
+          </p>
+          <p class="mt-4 font-exo text-base leading-relaxed text-zinc-400">
+            L'édition 2026 explore la fusion parfaite entre l'humain et la machine, le son et
+            la lumière, la terre et le ciel.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 </Layout>

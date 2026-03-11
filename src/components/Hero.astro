@@ -3,8 +3,12 @@ const isHomePage = Astro.url.pathname === '/' || Astro.url.pathname === '/index.
 const { hero, description } = Astro.props;
 ---
 
-<section class="bg-black text-white py-20">
-  <div class="px-6 py-20">
+<section class="relative bg-black text-white py-20 overflow-hidden">
+  {isHomePage && (
+    <canvas id="dance-canvas" class="absolute inset-0 z-0 w-full h-full"></canvas>
+  )}
+  
+  <div class="px-6 py-20 relative z-10">
     {isHomePage ? (
       <h1 class="text-center bg-gradient-to-t from-purple-500 to-blue-500 bg-clip-text text-transparent animate-dimlight">
         FlyTapFest
@@ -23,4 +27,193 @@ const { hero, description } = Astro.props;
     )}
   </div>
 </section>
+ {/*L'animation qui va suivre a été réalisé par chatgpt, je n'ai pas les compétences 
+  pour faire ça mais c'était sympa visuellement, voilà merci pour votre compréhension !!!*/}
+{isHomePage && (
+  <script>
+    const canvas = document.getElementById('dance-canvas') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+    
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Configuration des lignes ondulantes
+    const lines = [
+      { y: height * 0.35, amplitude: 40, frequency: 0.02, speed: 0.001, color: '#60a5fa' }, // Ligne du haut (bleu)
+      { y: height * 0.40, amplitude: 50, frequency: 0.025, speed: -0.0015, color: '#a78bfa' }, // Ligne du haut 2 (violet)
+      { y: height * 0.60, amplitude: 45, frequency: 0.022, speed: 0.0012, color: '#c084fc' }, // Ligne du bas 1 (violet)
+      { y: height * 0.65, amplitude: 55, frequency: 0.018, speed: -0.001, color: '#60a5fa' }  // Ligne du bas 2 (bleu)
+    ];
+
+    function animate(time) {
+      // Fond noir
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, width, height);
+
+      // Dessiner chaque ligne ondulante
+      lines.forEach(line => {
+        ctx.beginPath();
+        ctx.strokeStyle = line.color;
+        ctx.lineWidth = 3;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = line.color;
+
+        // Créer l'ondulation
+        for (let x = 0; x < width; x += 2) {
+          const y = line.y + Math.sin(x * line.frequency + time * line.speed) * line.amplitude;
+          
+          if (x === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  </script>
+)}
+
+{isHomePage && (
+  <script>
+    const canvas = document.getElementById('dance-canvas') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+    
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    // Gestion du redimensionnement
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const points = [];
+
+    // Fonction pour sculpter les points en forme de chaussure
+    function createShoe(offsetX, offsetY, rotation, scale, group) {
+      // On génère une grille de points
+      for (let x = -130; x <= 130; x += 7.5) {
+        for (let y = -90; y <= 90; y += 7.5) {
+          
+          // Masques mathématiques pour découper la forme d'une claquette
+          const toe = ((x - 20) / 75)**2 + (y / 30)**2 <= 1;
+          const heel = ((x + 55) / 35)**2 + ((y - 5) / 35)**2 <= 1;
+          const mid = x >= -55 && x <= 20 && y > -20 && y < 30;
+          const ankle = ((x + 20) / 30)**2 + ((y + 25) / 45)**2 <= 1;
+          const hole = ((x + 15) / 22)**2 + ((y + 35) / 18)**2 <= 1; // Trou de la cheville
+
+          if ((toe || heel || mid || ankle) && !hole) {
+            // Déformation de la grille pour donner un léger effet de volume 3D
+            let localX = x + Math.sin(y * 0.05) * 8;
+            let localY = y + Math.cos(x * 0.05) * 8;
+
+            // Application de la rotation et de l'échelle
+            const rx = (localX * Math.cos(rotation) - localY * Math.sin(rotation)) * scale;
+            const ry = (localX * Math.sin(rotation) + localY * Math.cos(rotation)) * scale;
+
+            points.push({
+              localX: rx,
+              localY: ry,
+              offsetX: offsetX,
+              offsetY: offsetY,
+              group: group,
+              phase: Math.random() * Math.PI * 2, // Pour le scintillement asynchrone
+              size: Math.random() * 1.5 + 1.2    // Variation de la taille des points
+            });
+          }
+        }
+      }
+    }
+
+    // Initialisation des deux chaussures
+    function init() {
+      points.length = 0;
+      // Chaussure en bas à gauche (orientée vers la droite)
+      createShoe(-200, 150, 0.2, 1.2, 'left');
+      // Chaussure en haut à droite (orientée vers le bas/gauche)
+      createShoe(200, -150, 2.8, 1.2, 'right');
+    }
+
+    init();
+
+    // Boucle d'animation
+    function animate(time) {
+      // Fond noir absolu
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, width, height);
+
+      const t = time * 0.0015; // Vitesse globale de l'animation
+
+      points.forEach(p => {
+        // Centrage responsive
+        let cx = width / 2 + p.offsetX;
+        let cy = height / 2 + p.offsetY;
+
+        // LOGIQUE DE DANSE (Claquettes)
+        let danceY = 0;
+
+        if (p.group === 'left') {
+          // La chaussure gauche tape de la pointe (pivot sur le talon)
+          const tapPhase = Math.abs(Math.sin(t * 3)); // Mouvement de rebond
+          const tapAngle = tapPhase * 0.25; 
+          if (p.localX > -50) { // Si c'est l'avant de la chaussure
+             danceY = (p.localX + 50) * Math.tan(tapAngle);
+          }
+          danceY -= tapPhase * 10; // Petit saut global
+        } else {
+          // La chaussure droite tape à contre-temps
+          const tapPhase = Math.abs(Math.cos(t * 3));
+          const tapAngle = tapPhase * -0.25;
+          if (p.localX < 50) {
+             danceY = (50 - p.localX) * Math.tan(tapAngle);
+          }
+          danceY -= tapPhase * 10;
+        }
+
+        // Flottement constant et respiration des points
+        const floatY = Math.sin(t + p.phase) * 1.5;
+        const floatX = Math.cos(t + p.phase) * 1.5;
+
+        const finalX = cx + p.localX + floatX;
+        const finalY = cy + p.localY + danceY + floatY;
+
+        // EFFET NÉON HYPER OPTIMISÉ (Glow externe)
+        ctx.beginPath();
+        ctx.arc(finalX, finalY, p.size * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(37, 99, 235, 0.2)'; // Tailwind blue-600 en transparence
+        ctx.fill();
+
+        // Coeur brillant du point
+        ctx.beginPath();
+        ctx.arc(finalX, finalY, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = '#60a5fa'; // Tailwind blue-400
+        ctx.fill();
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  </script>
+)}
   
