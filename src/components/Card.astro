@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { titre, description, href, className = "", imageSrc } = Astro.props;
-const baseClasses = "block bg-black text-white rounded-xl border-2 border-blue-500 shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] transition-shadow p-3 w-full max-w-sm";
+const baseClasses = "block bg-black text-white rounded-xl border-2 border-blue-500 shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] transition-shadow p-3 w-[350px] h-[400px] flex flex-col";
 const classes = `${baseClasses} ${className}`;
 
 const Tag = href ? 'a' : 'article';
@@ -21,6 +21,7 @@ const Tag = href ? 'a' : 'article';
     </div>
   )}
   {titre && <h3 class="text-xl font-semibold mb-2">{titre}</h3>}
-  {description && <p class="text-gray-300">{description}</p>}
+  {description && <p class="text-gray-300 flex-1 overflow-hidden">{description}</p>}
+  <div class="grow"></div>
   <slot />
 </Tag>

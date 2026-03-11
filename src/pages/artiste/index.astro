@@ -26,8 +26,8 @@ const scenes = getScenesUniques(tousLesArtistes);
 
 <Layout title="Artistes" heroTitle="Artistes" heroDescription="Découvrez tous les artistes du festival">
   <section class="bg-black py-10">
-    <div class="container-grid">
-      <div class="col-span-12 mb-8">
+    <div class="container-grid justify-items-center">
+      <div class="col-span-12 mb-8 gap-15">
         <form method="get" class="flex flex-wrap gap-4 justify-center">
         <div>
           <label for="genre" class="text-white mr-2 font-exo">Genre:</label>
@@ -68,21 +68,21 @@ const scenes = getScenesUniques(tousLesArtistes);
         </form>
       </div>
 
-      <div class="col-span-12 lg:col-span-4">
+      <div class="col-span-12 flex flex-wrap gap-8 justify-center">
         {artistes && artistes.map((artiste) => {
-        const sceneName = artiste.expand?.scene?.nom || 'Scène non définie';
-        
-        return (
-          <CardBack
-            nom={artiste.nom}
-            horaires={artiste.horaires}
-            scene={sceneName}
-            record={artiste}
-            recordImage={artiste.img}
-            href={`/artiste/${artiste.id}`}
-          />
-        );
-      })}
+          const sceneName = artiste.expand?.scene?.nom || 'Scène non définie';
+          
+          return (
+            <CardBack
+              nom={artiste.nom}
+              horaires={artiste.horaires}
+              scene={sceneName}
+              record={artiste}
+              recordImage={artiste.img}
+              href={`/artiste/${artiste.id}`}
+            />
+          );
+        })}
       </div>
     </div>
   </section>

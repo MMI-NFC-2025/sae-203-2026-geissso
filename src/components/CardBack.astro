@@ -14,7 +14,7 @@ interface Props {
 }
 
 const { nom, horaires, scene, capacite, description, href, className = "", record, recordImage } = Astro.props;
-const baseClasses = "block bg-black text-white rounded-xl border-2 border-blue-500 shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] transition-shadow p-3 w-full max-w-sm";
+const baseClasses = "block bg-black text-white rounded-xl border-2 border-blue-500 shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] transition-shadow p-3 w-[350px] h-[400px] flex flex-col";
 const classes = `${baseClasses} ${className}`;
 
 const Tag = href ? 'a' : 'article';
@@ -61,6 +61,8 @@ const Tag = href ? 'a' : 'article';
   {description && (
     <p class="text-gray-400 text-sm line-clamp-3 mt-2">{description}</p>
   )}
+  
+  <div class="grow"></div>
   
   <slot />
 </Tag>

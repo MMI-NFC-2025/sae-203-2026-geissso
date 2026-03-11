@@ -1,7 +1,240 @@
 ---
+// @ts-nocheck
 import Layout from '../layouts/Layout.astro';
+import { getArtiste, getScenesUniques } from '../../backend/backend.mjs';
+
+const artistes = await getArtiste();
+const tousLesArtistes = await getArtiste();
+const scenes = getScenesUniques(tousLesArtistes || []);
+
+// Grouper les artistes par date
+const artistesParDate: Record<string, any[]> = {};
+(artistes || []).forEach((artiste: any) => {
+  if (artiste.horaires) {
+    const date = new Date(artiste.horaires);
+    const dateStr = date.toLocaleDateString('fr-FR', { 
+      day: 'numeric', 
+      month: 'long', 
+      year: 'numeric' 
+    });
+    
+    if (!artistesParDate[dateStr]) {
+      artistesParDate[dateStr] = [];
+    }
+    
+    artistesParDate[dateStr].push({
+      ...artiste,
+      time: date.toLocaleTimeString('fr-FR', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      })
+    });
+  }
+});
+
+// Trier les artistes par heure dans chaque jour
+Object.keys(artistesParDate).forEach((date: string) => {
+  artistesParDate[date].sort((a: any, b: any) => 
+    new Date(a.horaires).getTime() - new Date(b.horaires).getTime()
+  );
+});
 ---
 
-<Layout title="Programmation">
+<Layout title="Programme - FlyTapFest" heroTitle='Programme' heroDescription='Découvrez le programme'>
+  <section class="bg-black text-white py-20">
+    <div class="container-grid">
+      <div class="col-span-12 text-center">
+        
+        
+
+        <a
+          href="/https://www.linkedin.com/in/sol%C3%A8ne-geiss-158491337/"
+          class="mt-14 inline-flex items-center gap-3 font-exo text-lg font-semibold text-violet-500 hover:text-violet-400 transition"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.9"
+            class="h-6 w-6"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="m7 10 5 5 5-5" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 20h14" />
+          </svg>
+          Télécharger le programme PDF
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-black text-white py-10">
+    <div class="container-grid">
+      <div class="col-span-12">
+        <h2 class="font-exo text-2xl font-bold text-zinc-100">Filtres</h2>
+
+        <div class="mt-8">
+          <p class="font-exo text-sm font-semibold text-zinc-400">Jour</p>
+          <div class="mt-3 flex flex-wrap gap-4 font-exo">
+            <button class="filter-day text-base font-semibold text-white active" data-filter="tous">Tous</button>
+            {Object.keys(artistesParDate).map(date => (
+              <button class="filter-day text-base text-zinc-400 hover:text-zinc-200 transition" data-filter={date}>
+                {date.split(' ').slice(0, 2).join(' ')}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div class="mt-10">
+          <p class="font-exo text-sm font-semibold text-zinc-400">Scène</p>
+          <div class="mt-3 flex flex-wrap gap-x-4 gap-y-2 font-exo">
+            <button class="filter-scene text-base text-white active" data-filter="toutes">Toutes</button>
+            {scenes.map(scene => (
+              <button class="filter-scene text-base text-zinc-400 hover:text-zinc-200 transition" data-filter={scene}>
+                {scene}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-black text-white py-10">
+    <div class="container-grid">
+      <div class="col-span-12">
+        {Object.entries(artistesParDate).map(([date, items]) => (
+          <div class="mb-16 date-group" data-date={date}>
+            <h2 class="font-exo text-3xl font-bold text-blue-600">{date}</h2>
+
+            <div class="mt-8 space-y-5">
+              {items.map((item: any) => (
+                <article 
+                  class="artiste-card rounded-2xl border border-blue-800 bg-black px-4 py-4 shadow-[0_0_18px_rgba(37,99,235,0.08)]"
+                  data-scene={item.expand?.scene?.nom || ''}
+                >
+                  <div class="flex items-start justify-between gap-4">
+                    <div class="flex items-center gap-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        class="h-6 w-6 shrink-0 text-fuchsia-500"
+                      >
+                        <circle cx="12" cy="12" r="9" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2" />
+                      </svg>
+                      <span class="font-exo text-xl font-bold text-fuchsia-500">{item.time}</span>
+                    </div>
+
+                    {item.genre && (
+                      <span class="rounded-md bg-blue-950 px-3 py-2 text-right font-exo text-sm font-medium text-blue-500">
+                        {item.genre}
+                      </span>
+                    )}
+                  </div>
+
+                  <a href={`/artiste/${item.id}`} class="block mt-2 group">
+                    <h3 class="font-exo text-xl font-bold leading-tight text-zinc-100 group-hover:text-blue-400 transition">
+                      {item.nom}
+                    </h3>
+                  </a>
+
+                  <div class="mt-2 flex items-center gap-2 text-zinc-400">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      class="h-5 w-5 shrink-0"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 21s7-4.35 7-11a7 7 0 1 0-14 0c0 6.65 7 11 7 11Z"
+                      />
+                      <circle cx="12" cy="10" r="2.5" />
+                    </svg>
+                    <a href={`/scene/${item.expand?.scene?.id}`} class="font-exo text-base hover:text-zinc-200 transition">
+                      {item.expand?.scene?.nom || 'Non défini'}
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Filtres de jour
+    const dayButtons = document.querySelectorAll<HTMLButtonElement>('.filter-day');
+    const dateGroups = document.querySelectorAll<HTMLDivElement>('.date-group');
     
+    dayButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const filter = button.getAttribute('data-filter');
+        
+        // Mettre à jour les styles des boutons
+        dayButtons.forEach(btn => {
+          btn.classList.remove('text-white', 'font-semibold', 'active');
+          btn.classList.add('text-zinc-400');
+        });
+        button.classList.add('text-white', 'font-semibold', 'active');
+        button.classList.remove('text-zinc-400');
+        
+        // Filtrer les groupes de dates
+        dateGroups.forEach(group => {
+          if (filter === 'tous' || group.getAttribute('data-date') === filter) {
+            group.style.display = 'block';
+          } else {
+            group.style.display = 'none';
+          }
+        });
+        
+        // Réappliquer le filtre de scène actif
+        applySceneFilter();
+      });
+    });
+    
+    // Filtres de scène
+    const sceneButtons = document.querySelectorAll<HTMLButtonElement>('.filter-scene');
+    const artisteCards = document.querySelectorAll<HTMLElement>('.artiste-card');
+    
+    function applySceneFilter() {
+      const activeSceneButton = document.querySelector<HTMLButtonElement>('.filter-scene.active');
+      const sceneFilter = activeSceneButton?.getAttribute('data-filter') || 'toutes';
+      
+      artisteCards.forEach(card => {
+        const cardScene = card.getAttribute('data-scene');
+        const dateGroup = card.closest<HTMLDivElement>('.date-group');
+        
+        if (dateGroup && dateGroup.style.display !== 'none') {
+          if (sceneFilter === 'toutes' || cardScene === sceneFilter) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        }
+      });
+    }
+    
+    sceneButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Mettre à jour les styles des boutons
+        sceneButtons.forEach(btn => {
+          btn.classList.remove('text-white', 'active');
+        });
+        button.classList.add('text-white', 'active');
+        
+        applySceneFilter();
+      });
+    });
+  </script>
 </Layout>
