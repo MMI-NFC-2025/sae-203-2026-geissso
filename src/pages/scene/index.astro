@@ -1,0 +1,26 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CardBack from '../../components/CardBack.astro';
+import { getScene } from '../../../backend/backend.mjs';
+
+const scenes = await getScene();
+---
+
+<Layout title="Scènes" heroTitle="Scènes" heroDescription="Découvrez toutes les scènes du festival">
+  <section class="bg-black py-10">
+    <div class="container-grid">
+      {scenes && scenes.map((scene) => (
+        <div class="col-span-12 lg:col-span-4">
+          <CardBack
+            nom={scene.nom}
+            capacite={scene.capacite}
+            description={scene.description}
+            record={scene}
+            recordImage={scene.img}
+            href={`/scene/${scene.id}`}
+          />
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>

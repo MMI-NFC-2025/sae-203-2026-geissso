@@ -1,0 +1,89 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import CardBack from "../../components/CardBack.astro";
+import { 
+  getArtiste, 
+  getGenresUniques, 
+  getScenesUniques, 
+  getArtistesAvecFiltres 
+} from "../../../backend/backend.mjs";
+
+const url = new URL(Astro.request.url);
+const genreFiltre = url.searchParams.get('genre') || '';
+const sceneFiltre = url.searchParams.get('scene') || '';
+const triHoraire = url.searchParams.get('tri') || '';
+
+const artistes = await getArtistesAvecFiltres({
+  genre: genreFiltre,
+  scene: sceneFiltre,
+  tri: triHoraire
+});
+
+const tousLesArtistes = await getArtiste();
+const genres = getGenresUniques(tousLesArtistes);
+const scenes = getScenesUniques(tousLesArtistes);
+---
+
+<Layout title="Artistes" heroTitle="Artistes" heroDescription="Découvrez tous les artistes du festival">
+  <section class="bg-black py-10">
+    <div class="container-grid">
+      <div class="col-span-12 mb-8">
+        <form method="get" class="flex flex-wrap gap-4 justify-center">
+        <div>
+          <label for="genre" class="text-white mr-2 font-exo">Genre:</label>
+          <select name="genre" id="genre" class="px-4 py-2 bg-blue-500/20 border-2 border-blue-500 rounded-xl font-bold text-exo text-white shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] transition-shadow">
+            <option value="">Tous</option>
+            {genres.map(genre => (
+              <option value={genre} selected={genreFiltre === genre}>{genre}</option>
+            ))}
+          </select>
+        </div>
+        
+        <div>
+          <label for="scene" class="text-white mr-2 font-exo">Scène:</label>
+          <select name="scene" id="scene" class="px-4 py-2 bg-blue-500/20 border-2 border-blue-500 rounded-xl font-bold text-exo text-white shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] transition-shadow">
+            <option value="">Toutes</option>
+            {scenes.map(scene => (
+              <option value={scene} selected={sceneFiltre === scene}>{scene}</option>
+            ))}
+          </select>
+        </div>
+        
+        <div>
+          <label for="tri" class="text-white mr-2 font-exo">Trier par horaire:</label>
+          <select name="tri" id="tri" class="px-4 py-2 bg-blue-500/20 border-2 border-blue-500 rounded-xl font-bold text-exo text-white shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] transition-shadow">
+            <option value="">Par défaut</option>
+            <option value="asc" selected={triHoraire === 'asc'}>Croissant</option>
+            <option value="desc" selected={triHoraire === 'desc'}>Décroissant</option>
+          </select>
+        </div>
+        
+        <button type="submit" class="px-5 py-2 bg-blue-500/20 border-2 border-green-500 rounded-xl font-bold text-exo text-white shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] transition-shadow">
+          Appliquer
+        </button>
+        
+        <a href="/artiste" class="px-5 py-2 bg-blue-500/20 border-2 border-red-500 rounded-xl font-bold text-exo text-white shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] transition-shadow inline-block">
+          Réinitialiser
+        </a>
+        </form>
+      </div>
+
+      <div class="col-span-12 lg:col-span-4">
+        {artistes && artistes.map((artiste) => {
+        const sceneName = artiste.expand?.scene?.nom || 'Scène non définie';
+        
+        return (
+          <CardBack
+            nom={artiste.nom}
+            horaires={artiste.horaires}
+            scene={sceneName}
+            record={artiste}
+            recordImage={artiste.img}
+            href={`/artiste/${artiste.id}`}
+          />
+        );
+      })}
+      </div>
+    </div>
+  </section>
+</Layout>

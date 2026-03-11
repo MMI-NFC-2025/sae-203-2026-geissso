@@ -1,7 +1,26 @@
+---
+const isHomePage = Astro.url.pathname === '/' || Astro.url.pathname === '/index.html';
+const { hero, description } = Astro.props;
+---
 
 <section class="bg-black text-white py-20">
   <div class="px-6 py-20">
-    <h1 class="text-center bg-gradient-to-t from-purple-500 to-blue-500 bg-clip-text text-transparent animate-dimlight">
-      FlyTapFest
-    </h1>
+    {isHomePage ? (
+      <h1 class="text-center bg-gradient-to-t from-purple-500 to-blue-500 bg-clip-text text-transparent animate-dimlight">
+        FlyTapFest
+      </h1>
+    ) : (
+      <>
+        <h1 class="text-center text-white">
+          {hero || "FlyTapFest"}
+        </h1>
+        {description && (
+          <p class="text-center text-white opacity-60 max-w-3xl mx-auto">
+            {description}
+          </p>
+        )}
+      </>
+    )}
+  </div>
+</section>
   
