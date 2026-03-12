@@ -3,9 +3,19 @@
 import Layout from '../layouts/Layout.astro';
 import { getArtiste, getScenesUniques } from '../../backend/backend.mjs';
 
-const artistes = await getArtiste();
-const tousLesArtistes = await getArtiste();
-const scenes = getScenesUniques(tousLesArtistes || []);
+let artistes = [];
+let tousLesArtistes = [];
+let scenes = [];
+let error = null;
+
+try {
+  artistes = await getArtiste();
+  tousLesArtistes = await getArtiste();
+  scenes = getScenesUniques(tousLesArtistes || []);
+} catch (e) {
+  console.error('Erreur lors de la récupération du programme:', e);
+  error = e.message;
+}
 
 // Grouper les artistes par date
 const artistesParDate: Record<string, any[]> = {};
@@ -41,6 +51,18 @@ Object.keys(artistesParDate).forEach((date: string) => {
 ---
 
 <Layout title="Programme" heroTitle='Programme' heroDescription='Découvrez le programme'>
+  {error && (
+    <section class="bg-black text-white py-20">
+      <div class="container-grid">
+        <div class="col-span-12 text-center text-red-400 p-8">
+          <p class="text-xl">Impossible de charger le programme pour le moment.</p>
+          <p class="text-sm mt-2">Erreur: {error}</p>
+        </div>
+      </div>
+    </section>
+  )}
+  {!error && (
+  <Fragment>
   <section class="bg-black text-white py-20">
     <div class="container-grid">
       <div class="col-span-12 text-center">
@@ -237,4 +259,6 @@ Object.keys(artistesParDate).forEach((date: string) => {
       });
     });
   </script>
+  </Fragment>
+  )}
 </Layout>

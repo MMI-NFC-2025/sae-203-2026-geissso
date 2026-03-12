@@ -5,16 +5,37 @@ import CardBack from "../../components/CardBack.astro";
 import { getSceneById, getArtistesBySceneId } from "../../../backend/backend.mjs";
 
 const { id } = Astro.params;
-const scene = await getSceneById(id);
+let scene = null;
+let artistes = [];
+let error = null;
 
-if (!scene) {
-  return Astro.redirect('/404');
+try {
+  scene = await getSceneById(id);
+  
+  if (!scene) {
+    return Astro.redirect('/404');
+  }
+  
+  artistes = await getArtistesBySceneId(id);
+} catch (e) {
+  console.error('Erreur lors de la récupération de la scène:', e);
+  error = e.message;
 }
-
-const artistes = await getArtistesBySceneId(id);
 ---
 
-<Layout title={scene.nom} heroTitle={scene.nom} heroDescription={scene.description || "Scène du FlyTapFest 2026"}>
+<Layout title={scene?.nom || "Scène"} heroTitle={scene?.nom || "Scène"} heroDescription={scene?.description || "Scène du FlyTapFest 2026"}>
+  {error && (
+    <section class="bg-black text-white py-10">
+      <div class="container-grid">
+        <div class="col-span-12 text-center text-red-400 p-8">
+          <p class="text-xl">Impossible de charger la scène pour le moment.</p>
+          <p class="text-sm mt-2">Erreur: {error}</p>
+          <a href="/scene" class="mt-4 inline-block px-5 py-3 bg-blue-500/20 border-2 border-blue-500 rounded-xl font-bold">Retour aux scènes</a>
+        </div>
+      </div>
+    </section>
+  )}
+  {!error && scene && (
   <section class="bg-black text-white py-10">
     <div class="container-grid">
       <div class="col-span-12 mb-8">
@@ -91,4 +112,5 @@ const artistes = await getArtistesBySceneId(id);
       </div>
     </div>
   </section>
+  )}
 </Layout>

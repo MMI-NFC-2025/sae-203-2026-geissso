@@ -4,17 +4,37 @@ import PBImage from "../../components/PbImage.astro";
 import { getArtisteById } from "../../../backend/backend.mjs";
 
 const { id } = Astro.params;
-const artiste = await getArtisteById(id);
+let artiste = null;
+let error = null;
 
-if (!artiste) {
-  return Astro.redirect('/404');
+try {
+  artiste = await getArtisteById(id);
+  
+  if (!artiste) {
+    return Astro.redirect('/404');
+  }
+} catch (e) {
+  console.error('Erreur lors de la récupération de l’artiste:', e);
+  error = e.message;
 }
 
-const sceneName = artiste.expand?.scene?.nom || 'Scène non définie';
-const sceneId = artiste.expand?.scene?.id;
+const sceneName = artiste?.expand?.scene?.nom || 'Scène non définie';
+const sceneId = artiste?.expand?.scene?.id;
 ---
 
-<Layout title={artiste.nom} heroTitle={artiste.nom}>
+<Layout title={artiste?.nom || "Artiste"} heroTitle={artiste?.nom || "Artiste"}>
+  {error && (
+    <section class="bg-black text-white py-10">
+      <div class="container-grid">
+        <div class="col-span-12 text-center text-red-400 p-8">
+          <p class="text-xl">Impossible de charger l'artiste pour le moment.</p>
+          <p class="text-sm mt-2">Erreur: {error}</p>
+          <a href="/artiste" class="mt-4 inline-block px-5 py-3 bg-blue-500/20 border-2 border-blue-500 rounded-xl font-bold">← Retour aux artistes</a>
+        </div>
+      </div>
+    </section>
+  )}
+  {!error && artiste && (
   <section class="bg-black text-white py-10">
     <div class="container-grid">
       <div class="col-span-12 mb-8">
@@ -102,4 +122,5 @@ const sceneId = artiste.expand?.scene?.id;
       </div>
     </div>
   </section>
+  )}
 </Layout>

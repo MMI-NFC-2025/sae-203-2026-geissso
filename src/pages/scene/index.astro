@@ -3,14 +3,28 @@ import Layout from '../../layouts/Layout.astro';
 import CardBack from '../../components/CardBack.astro';
 import { getScene } from '../../../backend/backend.mjs';
 
-const scenes = await getScene();
+let scenes = [];
+let error = null;
+
+try {
+  scenes = await getScene();
+} catch (e) {
+  console.error('Erreur lors de la récupération des scènes:', e);
+  error = e.message;
+}
 ---
 
 <Layout title="Scènes" heroTitle="Scènes" heroDescription="Découvrez toutes les scènes du festival">
   <section class="bg-black py-10">
     <div class="container-grid">
+      {error && (
+        <div class="col-span-12 text-center text-red-400 p-8">
+          <p class="text-xl">Impossible de charger les scènes pour le moment.</p>
+          <p class="text-sm mt-2">Erreur: {error}</p>
+        </div>
+      )}
       <div class="col-span-12 flex flex-wrap gap-8 justify-center">
-        {scenes && scenes.map((scene) => (
+        {scenes && scenes.length > 0 && scenes.map((scene) => (
           <CardBack
             nom={scene.nom}
             capacite={scene.capacite}
