@@ -1,0 +1,122 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Connexion" heroTitle="Connexion" heroDescription="Accédez à votre espace">
+  <section class="w-full bg-[#02030d] px-4 py-12 text-white min-h-screen">
+    <div class="mx-auto w-full max-w-md">
+      
+      <!-- Navigation -->
+      <div class="flex gap-4 mb-8">
+        <a 
+          href="/authentification" 
+          class="flex-1 rounded-lg border-2 border-blue-600 bg-blue-950 py-3 text-center text-lg font-semibold text-blue-400 transition hover:bg-blue-900"
+        >
+          Connexion
+        </a>
+        <a 
+          href="/authentification/inscription" 
+          class="flex-1 rounded-lg border-2 border-violet-600 bg-black py-3 text-center text-lg font-semibold text-zinc-400 transition hover:text-violet-400 hover:border-violet-500"
+        >
+          Inscription
+        </a>
+      </div>
+
+      <!-- Formulaire de Connexion -->
+      <div class="rounded-2xl border border-blue-900 bg-black px-6 py-8 shadow-[0_0_18px_rgba(37,99,235,0.08)]">
+        <h2 class="text-blue-600 mb-6">Se connecter</h2>
+        
+        <form id="login-form" class="space-y-6">
+          <div id="login-error" class="hidden rounded-lg bg-red-900/30 border border-red-500 px-4 py-3 text-red-300 text-sm"></div>
+          
+          <div>
+            <label for="login-email" class="block text-sm font-medium mb-2 text-zinc-300">Email</label>
+            <input
+              type="email"
+              id="login-email"
+              name="email"
+              required
+              class="w-full rounded-lg border border-blue-900 bg-black px-4 py-3 text-white placeholder-zinc-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              placeholder="votre@email.com"
+            />
+          </div>
+
+          <div>
+            <label for="login-password" class="block text-sm font-medium mb-2 text-zinc-300">Mot de passe</label>
+            <input
+              type="password"
+              id="login-password"
+              name="password"
+              required
+              class="w-full rounded-lg border border-blue-900 bg-black px-4 py-3 text-white placeholder-zinc-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              placeholder="••••••••"
+            />
+          </div>
+
+          <div class="flex items-center justify-between">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" class="rounded border-zinc-600 bg-zinc-800 text-blue-600 focus:ring-blue-500" />
+              <span class="text-sm text-zinc-400">Se souvenir de moi</span>
+            </label>
+            <a href="#" class="text-sm text-blue-400 hover:text-blue-300 transition">Mot de passe oublié ?</a>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 px-6 py-3 font-semibold text-white transition hover:from-blue-500 hover:to-violet-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Se connecter
+          </button>
+
+          <p class="text-center text-sm text-zinc-400 mt-4">
+            Pas encore de compte ? <a href="/authentification/inscription" class="text-violet-400 hover:text-violet-300 font-semibold">S'inscrire</a>
+          </p>
+        </form>
+      </div>
+
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { loginUser } from '../../../backend/backend.mjs';
+
+  // Gestion du formulaire de connexion
+  const loginForm = document.getElementById('login-form');
+  const loginError = document.getElementById('login-error');
+
+  loginForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(loginForm);
+    const email = formData.get('email');
+    const password = formData.get('password');
+
+    // Masquer les erreurs précédentes
+    loginError?.classList.add('hidden');
+
+    try {
+      const result = await loginUser(email, password);
+      
+      if (result.success) {
+        // Stocker le token et les infos utilisateur
+        localStorage.setItem('authToken', result.token);
+        localStorage.setItem('user', JSON.stringify(result.user));
+        
+        // Rediriger vers la page d'accueil
+        window.location.href = '/';
+      } else {
+        // Afficher l'erreur
+        if (loginError) {
+          loginError.textContent = result.error || 'Erreur de connexion';
+          loginError.classList.remove('hidden');
+        }
+      }
+    } catch (error) {
+      if (loginError) {
+        loginError.textContent = 'Une erreur est survenue lors de la connexion';
+        loginError.classList.remove('hidden');
+      }
+    }
+  });
+</script>

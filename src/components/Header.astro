@@ -22,30 +22,19 @@ import Menu from './Menu.astro';
         <a href="/scene" class="text-white hover:text-blue-400">Scènes</a>
         <a href="/infos" class="text-white hover:text-blue-400">Infos pratiques</a>
         <a href="/contact" class="text-white hover:text-blue-400">Contact</a>
-
-        <div class="flex items-center space-x-4 border-l border-gray-600 pl-6">
+        
+        <div class="flex items-center border-l border-gray-600 pl-6">
           <a
-            href="https://facebook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-gray-300 hover:text-blue-400"
-            aria-label="Facebook"
+            href="/authentification"
+            class="text-gray-300 hover:text-blue-400 transition-colors"
+            aria-label="Connexion"
           >
-            <span class="text-sm">FB</span>
-          </a>
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-gray-300 hover:text-blue-400"
-            aria-label="Instagram"
-          >
-            <span class="text-sm">IG</span>
+            <img src="/Profile.svg" alt="Connexion" class="h-6 w-6" />
           </a>
         </div>
       </div>
 
-      <!-- Mobile Menu Button -->
+      
       <div class="lg:hidden">
         <button id="menu-toggle-btn" class="text-white focus:outline-none relative w-6 h-6" aria-label="Menu">
           <span id="line1" class="absolute left-0 top-0 h-0.5 w-6 bg-white transition-all duration-300"></span>

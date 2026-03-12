@@ -8,6 +8,26 @@
   --font-exo: "Exo", sans-serif;
 
   --my-grid: repeat(12, minmax(0, 64px));
+
+  /* Espacement */
+  --space-unit: 0.25rem;
+  --space-s: 0.625rem;
+  --space-m: 1.6875rem;
+  --space-l: 3.4375rem;
+  --space-xl: 16.625rem;
+
+  /* Typographie */
+  --text-sm: 0.875rem;
+  --text-bas: 1rem;
+  --text-base: 1rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+  --text-7xl: 4.5rem;
+  --font-string: Exo;
+  --font-sans: Monoton;
 }
 
 @layer utilities {
@@ -69,34 +89,6 @@
   h3 {
     @apply text-2xl font-exo leading-tight lg:text-4xl;
   }
-}
-
-:root {
-
-  --space-unit: 0.25rem;
-  --space-s: 0.625rem;
-  --space-m: 1.6875rem;
-  --space-l: 3.4375rem;
-  --space-xl: 16.625rem;
-}
-
-/* Typographie */
-:root {
-
-  /* Mode 1 */
-  /* number */
-  --text-sm: 0.875rem;
-  --text-bas: 1rem;
-  --text-base: 1rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  --text-5xl: 3rem;
-  --text-6xl: 3.75rem;
-  --text-7xl: 4.5rem;
-  /* string */
-  --font-string: Exo;
-  --font-sans: Monoton;
 }
 
 /* Animation dimlight pour le Hero h1 */

@@ -146,4 +146,87 @@ export async function getImageUrl(record, recordImage) {
   return db.files.getUrl(record, recordImage);
 }
 
+// ========== AUTHENTIFICATION ==========
+
+/**
+ * Inscription d'un nouvel utilisateur
+ */
+export async function registerUser(userData) {
+  try {
+    const data = {
+      username: userData.email.split('@')[0] + '_' + Date.now(),
+      email: userData.email,
+      emailVisibility: true,
+      password: userData.password,
+      passwordConfirm: userData.passwordConfirm,
+      name: `${userData.prenom} ${userData.nom}`,
+      prenom: userData.prenom,
+      nom: userData.nom
+    };
+
+    const record = await db.collection('users').create(data);
+    
+    // Envoyer l'email de vérification
+    await db.collection('users').requestVerification(userData.email);
+    
+    return { success: true, user: record };
+  } catch (error) {
+    console.error('Erreur inscription:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Connexion d'un utilisateur
+ */
+export async function loginUser(email, password) {
+  try {
+    const authData = await db.collection('users').authWithPassword(email, password);
+    
+    return { 
+      success: true, 
+      user: authData.record,
+      token: authData.token 
+    };
+  } catch (error) {
+    console.error('Erreur connexion:', error);
+    return { success: false, error: 'Email ou mot de passe incorrect' };
+  }
+}
+
+/**
+ * Déconnexion
+ */
+export function logoutUser() {
+  db.authStore.clear();
+}
+
+/**
+ * Vérifier si un utilisateur est connecté
+ */
+export function isUserLoggedIn() {
+  return db.authStore.isValid;
+}
+
+/**
+ * Récupérer l'utilisateur actuellement connecté
+ */
+export function getCurrentUser() {
+  return db.authStore.model;
+}
+
+/**
+ * Vérifier si un email existe déjà
+ */
+export async function checkEmailExists(email) {
+  try {
+    const records = await db.collection('users').getFullList({
+      filter: `email = "${email}"`
+    });
+    return records.length > 0;
+  } catch (error) {
+    console.error('Erreur vérification email:', error);
+    return false;
+  }
+}
 
