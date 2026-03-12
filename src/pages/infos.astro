@@ -81,9 +81,12 @@ const faq = [
 
 <Layout title="Infos pratiques" heroTitle="Infos pratiques" heroDescription="Toutes les informations utiles">
   <section class="w-full bg-[#02030d] px-4 py-12 text-white">
+    <div class="mx-auto max-w-7xl">
+     
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
 
-      <section class="mt-16">
-        <h2 class=" text-blue-600">Tarifs</h2>
+        <section>
+          <h2 class="text-blue-600">Tarifs</h2>
 
         <div class="mt-8 space-y-5">
           {tarifs.map((item) => (
@@ -106,7 +109,7 @@ const faq = [
         </div>
       </section>
 
-      <section class="mt-16">
+      <section>
         <h2 class="text-violet-500">Hébergements</h2>
 
         <div class="mt-8 space-y-5">
@@ -137,8 +140,11 @@ const faq = [
           </p>
         </div>
       </section>
+    </div>
 
-      <section class="mt-16">
+   
+    <div class="mx-auto mt-16 max-w-7xl grid grid-cols-1 gap-8 md:grid-cols-2">
+      <section>
         <h2 class="text-fuchsia-500">Accès & Transport</h2>
 
         <div class="mt-8 space-y-5">
@@ -169,7 +175,7 @@ const faq = [
         </div>
       </section>
 
-      <section class="mt-16">
+      <section>
         <h2 class="text-4xl font-bold text-blue-600">Questions fréquentes</h2>
 
         <div class="mt-8 space-y-4">
