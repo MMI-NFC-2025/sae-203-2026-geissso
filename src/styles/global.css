@@ -9,16 +9,13 @@
 
   --my-grid: repeat(12, minmax(0, 64px));
 
-  /* Espacement */
   --space-unit: 0.25rem;
   --space-s: 0.625rem;
   --space-m: 1.6875rem;
   --space-l: 3.4375rem;
   --space-xl: 16.625rem;
 
-  /* Typographie */
   --text-sm: 0.875rem;
-  --text-bas: 1rem;
   --text-base: 1rem;
   --text-2xl: 1.5rem;
   --text-3xl: 1.875rem;
@@ -26,8 +23,6 @@
   --text-5xl: 3rem;
   --text-6xl: 3.75rem;
   --text-7xl: 4.5rem;
-  --font-string: Exo;
-  --font-sans: Monoton;
 }
 
 @layer utilities {
@@ -91,21 +86,6 @@
   }
 }
 
-/* Animation dimlight pour le Hero h1 */
-@keyframes dimlight {
-  0%, 18%, 22%, 25%, 53%, 57%, 100% {
-    filter: 
-      drop-shadow(0 0 10px rgba(168, 85, 247, 0.8))
-      drop-shadow(0 0 20px rgba(168, 85, 247, 0.6))
-      drop-shadow(0 0 30px rgba(59, 130, 246, 0.5))
-      brightness(1.2);
-  }
-  20%, 24%, 55% {
-    filter: 
-      drop-shadow(0 0 5px rgba(168, 85, 247, 0.3))
-      brightness(0.8);
-  }
-}
 
 .animate-dimlight {
   animation: dimlight 1.5s infinite;

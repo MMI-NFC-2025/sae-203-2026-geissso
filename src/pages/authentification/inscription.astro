@@ -6,7 +6,6 @@ import Layout from '../../layouts/Layout.astro';
   <section class="w-full bg-[#02030d] px-4 py-12 text-white min-h-screen">
     <div class="mx-auto w-full max-w-md">
       
-      <!-- Navigation -->
       <div class="flex gap-4 mb-8">
         <a 
           href="/authentification" 
@@ -22,7 +21,7 @@ import Layout from '../../layouts/Layout.astro';
         </a>
       </div>
 
-      <!-- Formulaire d'Inscription -->
+
       <div class="rounded-2xl border border-violet-500 bg-black px-6 py-8 shadow-[0_0_18px_rgba(168,85,247,0.08)]">
         <h2 class="text-violet-500 mb-6">Créer un compte</h2>
         
@@ -104,7 +103,7 @@ import Layout from '../../layouts/Layout.astro';
 
           <button
             type="submit"
-            class="w-full rounded-lg bg-gradient-to-r from-violet-600 to-fuchsia-600 px-6 py-3 font-semibold text-white transition hover:from-violet-500 hover:to-fuchsia-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
+            class="w-full rounded-lg bg-linear-to-r from-violet-600 to-fuchsia-600 px-6 py-3 font-semibold text-white transition hover:from-violet-500 hover:to-fuchsia-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
           >
             S'inscrire
           </button>
@@ -122,7 +121,6 @@ import Layout from '../../layouts/Layout.astro';
 <script>
   import { registerUser, checkEmailExists } from '../../../backend/backend.mjs';
 
-  // Gestion du formulaire d'inscription
   const registerForm = document.getElementById('register-form');
   const registerError = document.getElementById('register-error');
   const registerSuccess = document.getElementById('register-success');
@@ -137,11 +135,9 @@ import Layout from '../../layouts/Layout.astro';
     const password = formData.get('password');
     const passwordConfirm = formData.get('password-confirm');
 
-    // Masquer les messages précédents
     registerError?.classList.add('hidden');
     registerSuccess?.classList.add('hidden');
 
-    // Validation
     if (password !== passwordConfirm) {
       if (registerError) {
         registerError.textContent = 'Les mots de passe ne correspondent pas';
@@ -159,7 +155,6 @@ import Layout from '../../layouts/Layout.astro';
     }
 
     try {
-      // Vérifier si l'email existe déjà
       const emailExists = await checkEmailExists(email);
       if (emailExists) {
         if (registerError) {
@@ -169,7 +164,6 @@ import Layout from '../../layouts/Layout.astro';
         return;
       }
 
-      // Inscription
       const result = await registerUser({
         prenom,
         nom,
@@ -179,16 +173,13 @@ import Layout from '../../layouts/Layout.astro';
       });
       
       if (result.success) {
-        // Afficher le message de succès
         if (registerSuccess) {
           registerSuccess.textContent = 'Inscription réussie ! Redirection vers la connexion...';
           registerSuccess.classList.remove('hidden');
         }
         
-        // Réinitialiser le formulaire
         registerForm.reset();
         
-        // Rediriger vers la page de connexion après 2 secondes
         setTimeout(() => {
           window.location.href = '/authentification';
         }, 2000);

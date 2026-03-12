@@ -141,16 +141,10 @@ export async function UpdateArtisteById(id, data) {
   await db.collection('Artiste').update(id, data);
 }
 
-
 export async function getImageUrl(record, recordImage) {
   return db.files.getUrl(record, recordImage);
 }
 
-// ========== AUTHENTIFICATION ==========
-
-/**
- * Inscription d'un nouvel utilisateur
- */
 export async function registerUser(userData) {
   try {
     const data = {
@@ -166,7 +160,6 @@ export async function registerUser(userData) {
 
     const record = await db.collection('users').create(data);
     
-    // Envoyer l'email de vérification
     await db.collection('users').requestVerification(userData.email);
     
     return { success: true, user: record };
@@ -176,9 +169,6 @@ export async function registerUser(userData) {
   }
 }
 
-/**
- * Connexion d'un utilisateur
- */
 export async function loginUser(email, password) {
   try {
     const authData = await db.collection('users').authWithPassword(email, password);
@@ -194,30 +184,18 @@ export async function loginUser(email, password) {
   }
 }
 
-/**
- * Déconnexion
- */
 export function logoutUser() {
   db.authStore.clear();
 }
 
-/**
- * Vérifier si un utilisateur est connecté
- */
 export function isUserLoggedIn() {
   return db.authStore.isValid;
 }
 
-/**
- * Récupérer l'utilisateur actuellement connecté
- */
 export function getCurrentUser() {
   return db.authStore.model;
 }
 
-/**
- * Vérifier si un email existe déjà
- */
 export async function checkEmailExists(email) {
   try {
     const records = await db.collection('users').getFullList({
@@ -229,4 +207,3 @@ export async function checkEmailExists(email) {
     return false;
   }
 }
-

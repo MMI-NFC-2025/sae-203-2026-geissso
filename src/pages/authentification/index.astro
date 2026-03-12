@@ -6,7 +6,6 @@ import Layout from '../../layouts/Layout.astro';
   <section class="w-full bg-[#02030d] px-4 py-12 text-white min-h-screen">
     <div class="mx-auto w-full max-w-md">
       
-      <!-- Navigation -->
       <div class="flex gap-4 mb-8">
         <a 
           href="/authentification" 
@@ -22,7 +21,6 @@ import Layout from '../../layouts/Layout.astro';
         </a>
       </div>
 
-      <!-- Formulaire de Connexion -->
       <div class="rounded-2xl border border-blue-900 bg-black px-6 py-8 shadow-[0_0_18px_rgba(37,99,235,0.08)]">
         <h2 class="text-blue-600 mb-6">Se connecter</h2>
         
@@ -63,7 +61,7 @@ import Layout from '../../layouts/Layout.astro';
 
           <button
             type="submit"
-            class="w-full rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 px-6 py-3 font-semibold text-white transition hover:from-blue-500 hover:to-violet-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full rounded-lg bg-linear-to-r from-blue-600 to-violet-600 px-6 py-3 font-semibold text-white transition hover:from-blue-500 hover:to-violet-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Se connecter
           </button>
@@ -81,7 +79,6 @@ import Layout from '../../layouts/Layout.astro';
 <script>
   import { loginUser } from '../../../backend/backend.mjs';
 
-  // Gestion du formulaire de connexion
   const loginForm = document.getElementById('login-form');
   const loginError = document.getElementById('login-error');
 
@@ -92,21 +89,17 @@ import Layout from '../../layouts/Layout.astro';
     const email = formData.get('email');
     const password = formData.get('password');
 
-    // Masquer les erreurs précédentes
     loginError?.classList.add('hidden');
 
     try {
       const result = await loginUser(email, password);
       
       if (result.success) {
-        // Stocker le token et les infos utilisateur
         localStorage.setItem('authToken', result.token);
         localStorage.setItem('user', JSON.stringify(result.user));
         
-        // Rediriger vers la page d'accueil
         window.location.href = '/';
       } else {
-        // Afficher l'erreur
         if (loginError) {
           loginError.textContent = result.error || 'Erreur de connexion';
           loginError.classList.remove('hidden');

@@ -1,45 +1,89 @@
 ---
+import { getImageUrl } from '../../backend/backend.mjs';
 const isHomePage = Astro.url.pathname === '/' || Astro.url.pathname === '/index.html';
-const { hero, description } = Astro.props;
+const { hero, description, record, recordImage } = Astro.props;
+
+let backgroundImageUrl = null;
+if (record && recordImage) {
+  try {
+    backgroundImageUrl = await getImageUrl(record, recordImage);
+  } catch (e) {
+    console.error('Erreur lors de la récupération de l\'image:', e);
+  }
+}
 ---
 
-<section class="relative bg-black text-white py-20 overflow-hidden">
-  {isHomePage && (
-    <Fragment>
-      <div class="absolute inset-0 bg-black z-0"></div>
-      <video 
-        id="hero-video"
-        autoplay 
-        loop 
-        muted 
-        playsinline
-        preload="auto"
-        class="absolute inset-0 z-[1] w-full h-full object-cover opacity-60"
-      >
-        <source src="/VideoHero.mp4" type="video/mp4" />
-        <source src="/VideoHero.mov" type="video/quicktime" />
-      </video>
-      <canvas id="dance-canvas" class="absolute inset-0 z-[2] w-full h-full pointer-events-none"></canvas>
-    </Fragment>
-  )}
-  
-  <div class="px-6 py-50 relative z-20">
-    {isHomePage ? (
-      <h1 class="text-center bg-gradient-to-t from-purple-500 to-blue-500 bg-clip-text text-transparent animate-dimlight">
-        FlyTapFest
-      </h1>
-    ) : (
+{backgroundImageUrl ? (
+  <section class="relative w-full overflow-hidden bg-black">
+    <div class="grid grid-rows-[70vh_auto] min-h-[80vh]">
+      
+      <div class="w-full h-full">
+        <div class="absolute inset-0 bg-black z-0"></div>
+        <div class="absolute inset-0 z-1">
+          <img 
+            src={backgroundImageUrl} 
+            alt={hero || "Hero"}
+            class="w-full h-full object-cover opacity-60"
+          />
+        </div>
+        <div class="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black z-2"></div>
+      </div>
+      
+      <div class="relative z-10 row-start-1 row-end-3 flex items-end pb-16">
+        <div class="container mx-auto px-6">
+          <div >
+            <h1 class="text-center text-white drop-shadow-2xl">
+              {hero || "FlyTapFest"}
+            </h1>
+            {description && (
+              <p class="text-center text-white/90 mt-4 max-w-3xl mx-auto drop-shadow-lg">
+                {description}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+) : (
+  <section class="relative bg-black text-white py-20 overflow-hidden">
+    {isHomePage && (
       <Fragment>
-        <h1 class="text-center text-white">
-          {hero || "FlyTapFest"}
-        </h1>
-        {description && (
-          <p class="text-center text-white opacity-60 max-w-3xl mx-auto">
-            {description}
-          </p>
-        )}
+        <div class="absolute inset-0 bg-black z-0"></div>
+        <video 
+          id="hero-video"
+          autoplay 
+          loop 
+          muted 
+          playsinline
+          preload="auto"
+          class="absolute inset-0 z-1 w-full h-full object-cover opacity-60"
+        >
+          <source src="/VideoHero.mp4" type="video/mp4" />
+          <source src="/VideoHero.mov" type="video/quicktime" />
+        </video>
+        <canvas id="dance-canvas" class="absolute inset-0 z-2 w-full h-full pointer-events-none"></canvas>
       </Fragment>
     )}
-  </div>
-</section>
+    
+    <div class="px-6 py-50 relative z-20">
+      {isHomePage ? (
+        <h1 class="text-center bg-linear-to-t from-purple-500 to-blue-500 bg-clip-text text-transparent animate-dimlight">
+          FlyTapFest
+        </h1>
+      ) : (
+        <Fragment>
+          <h1 class="text-center text-white">
+            {hero || "FlyTapFest"}
+          </h1>
+          {description && (
+            <p class="text-center text-white opacity-60 max-w-3xl mx-auto">
+              {description}
+            </p>
+          )}
+        </Fragment>
+      )}
+    </div>
+  </section>
+)}
  

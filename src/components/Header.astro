@@ -71,11 +71,9 @@ import Menu from './Menu.astro';
     isMenuOpen = !isMenuOpen;
     
     if (isMenuOpen) {
-      // Ouvrir le menu
       menu?.classList.remove('hidden');
       menu?.classList.add('flex');
       
-      // Animer vers X
       line1?.classList.add('rotate-45', 'top-2.5');
       line2?.classList.add('opacity-0');
       line3?.classList.add('-rotate-45', 'top-2.5');
@@ -84,10 +82,8 @@ import Menu from './Menu.astro';
     }
   });
   
-  // Fermer avec le bouton X dans le menu
   closeBtn?.addEventListener('click', closeMenu);
   
-  // Fermer le menu en cliquant sur un lien
   const menuLinks = menu?.querySelectorAll('a');
   menuLinks?.forEach(link => {
     link.addEventListener('click', closeMenu);

@@ -1,5 +1,5 @@
 ---
-import PBImage from './PbImage.astro';
+import PbImage from './PbImage.astro';
 
 interface Props {
   nom?: string;
@@ -23,7 +23,7 @@ const Tag = href ? 'a' : 'article';
 <Tag href={href} class={classes}>
   {record && recordImage && (
     <div class="mb-4 overflow-hidden rounded-t-lg">
-      <PBImage 
+      <PbImage 
         record={record} 
         recordImage={recordImage} 
         width={400} 

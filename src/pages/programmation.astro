@@ -1,5 +1,4 @@
 ---
-// @ts-nocheck
 import Layout from '../layouts/Layout.astro';
 import { getArtiste, getScenesUniques } from '../../backend/backend.mjs';
 
@@ -17,7 +16,6 @@ try {
   error = e.message;
 }
 
-// Grouper les artistes par date
 const artistesParDate: Record<string, any[]> = {};
 (artistes || []).forEach((artiste: any) => {
   if (artiste.horaires) {
@@ -66,9 +64,6 @@ Object.keys(artistesParDate).forEach((date: string) => {
   <section class="bg-black text-white py-20">
     <div class="container-grid">
       <div class="col-span-12 text-center">
-        
-        
-
         <a
           href="/https://www.linkedin.com/in/sol%C3%A8ne-geiss-158491337/"
           class="mt-14 inline-flex items-center gap-3 font-exo text-lg font-semibold text-violet-500 hover:text-violet-400 transition"
@@ -195,7 +190,6 @@ Object.keys(artistesParDate).forEach((date: string) => {
   </section>
 
   <script>
-    // Filtres de jour
     const dayButtons = document.querySelectorAll<HTMLButtonElement>('.filter-day');
     const dateGroups = document.querySelectorAll<HTMLDivElement>('.date-group');
     
@@ -203,7 +197,6 @@ Object.keys(artistesParDate).forEach((date: string) => {
       button.addEventListener('click', () => {
         const filter = button.getAttribute('data-filter');
         
-        // Mettre à jour les styles des boutons
         dayButtons.forEach(btn => {
           btn.classList.remove('text-white', 'font-semibold', 'active');
           btn.classList.add('text-zinc-400');
@@ -211,7 +204,6 @@ Object.keys(artistesParDate).forEach((date: string) => {
         button.classList.add('text-white', 'font-semibold', 'active');
         button.classList.remove('text-zinc-400');
         
-        // Filtrer les groupes de dates
         dateGroups.forEach(group => {
           if (filter === 'tous' || group.getAttribute('data-date') === filter) {
             group.style.display = 'block';
@@ -220,12 +212,10 @@ Object.keys(artistesParDate).forEach((date: string) => {
           }
         });
         
-        // Réappliquer le filtre de scène actif
         applySceneFilter();
       });
     });
     
-    // Filtres de scène
     const sceneButtons = document.querySelectorAll<HTMLButtonElement>('.filter-scene');
     const artisteCards = document.querySelectorAll<HTMLElement>('.artiste-card');
     
@@ -249,7 +239,6 @@ Object.keys(artistesParDate).forEach((date: string) => {
     
     sceneButtons.forEach(button => {
       button.addEventListener('click', () => {
-        // Mettre à jour les styles des boutons
         sceneButtons.forEach(btn => {
           btn.classList.remove('text-white', 'active');
         });

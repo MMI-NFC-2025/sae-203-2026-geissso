@@ -10,9 +10,11 @@ interface Props {
   title?: string;
   heroTitle?: string;
   heroDescription?: string;
+  heroRecord?: any;
+  heroRecordImage?: string;
 }
 
-const { title = 'FlyTapFest', heroTitle, heroDescription } = Astro.props;
+const { title = 'FlyTapFest', heroTitle, heroDescription, heroRecord, heroRecordImage } = Astro.props;
 ---
 
 <!doctype html>
@@ -28,13 +30,9 @@ const { title = 'FlyTapFest', heroTitle, heroDescription } = Astro.props;
   <body>
     <Header />
     <main>
-		<Hero hero={heroTitle} description={heroDescription} />
+		<Hero hero={heroTitle} description={heroDescription} record={heroRecord} recordImage={heroRecordImage} />
       <slot />
     </main>
     <Footer />
   </body>
 </html>
-
-
-
-

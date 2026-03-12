@@ -1,3 +1,5 @@
+Lien du pocketbase: https://pbflytapfest.geiss-solene.fr/_/
+
 id :solene.geiss@edu.univ-fcomte.fr
 
 mdp :SAE203_1234!
