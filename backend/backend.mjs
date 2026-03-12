@@ -1,6 +1,6 @@
 import PocketBase from 'pocketbase';
 
-const db = new PocketBase("http://127.0.0.1:8090");
+const db = new PocketBase("https://pbflytapfest.geiss-solene.fr");
 
 export async function getScene() {
   const scenes = await db.collection('Scene').getFullList({
