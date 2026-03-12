@@ -1,7 +1,192 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const tarifs = [
+  {
+    price: "85€",
+    title: "Pass 2 jours",
+    subtitle: "Accès illimité aux 3 scènes",
+  },
+  {
+    price: "50€",
+    title: "Billet 1 jour",
+    subtitle: "Accès à toutes les scènes pendant 1 jour",
+  },
+  {
+    price: "40€",
+    title: "Tarif réduit",
+    subtitle: "Étudiants, -18 ans, demandeurs d'emploi",
+  },
+  {
+    price: "Gratuit",
+    title: "Tarif enfant",
+    subtitle: "Moins de 12 ans accompagné",
+  },
+];
+
+const hebergements = [
+  {
+    name: "Hôtel du Parc",
+    type: "Hôtel 3★",
+    distance: "500m",
+  },
+  {
+    name: "Camping Municipal",
+    type: "Camping 2★",
+    distance: "1.2km",
+  },
+  {
+    name: "Auberge de Jeunesse",
+    type: "Auberge",
+    distance: "800m",
+  },
+];
+
+const transports = [
+  {
+    name: "Navette Festival",
+    type: "Gratuite",
+    distance: "Toutes les 15min",
+  },
+  {
+    name: "Gare SNCF",
+    type: "Train",
+    distance: "2km",
+  },
+  {
+    name: "Parking Gratuit",
+    type: "1000 places",
+    distance: "300m",
+  },
+];
+
+const faq = [
+  {
+    question: "Peut-on apporter de la nourriture ?",
+    answer:
+      "Oui, vous pouvez apporter votre propre nourriture et boissons non alcoolisées. Des food trucks seront également présents sur place.",
+  },
+  {
+    question: "Le festival est-il accessible PMR ?",
+    answer:
+      "Oui, le site est entièrement accessible aux personnes à mobilité réduite. Des zones réservées sont disponibles devant chaque scène.",
+  },
+  {
+    question: "Y a-t-il une consigne ?",
+    answer:
+      "Oui, un service de consigne sécurisé est disponible à l'entrée du festival. Tarif : 5€ par jour.",
+  },
+];
 ---
 
 <Layout title="Infos pratiques" heroTitle="Infos pratiques" heroDescription="Toutes les informations utiles">
+  <section class="w-full bg-[#02030d] px-4 py-12 text-white">
 
+      <section class="mt-16">
+        <h2 class=" text-blue-600">Tarifs</h2>
+
+        <div class="mt-8 space-y-5">
+          {tarifs.map((item) => (
+            <article class="rounded-2xl border border-blue-900 bg-black px-4 py-4 shadow-[0_0_18px_rgba(37,99,235,0.08)]">
+              <div class="flex items-start justify-between gap-4">
+                <span class="rounded-md bg-blue-950 px-3 py-1 text-lg font-semibold text-blue-500">
+                  {item.price}
+                </span>
+              </div>
+
+              <h3 class="mt-2 text-[1.9rem] font-bold leading-tight text-zinc-100">
+                {item.title}
+              </h3>
+
+              <p class="mt-1 text-[1.35rem] leading-tight text-zinc-400">
+                {item.subtitle}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="mt-16">
+        <h2 class="text-violet-500">Hébergements</h2>
+
+        <div class="mt-8 space-y-5">
+          {hebergements.map((item) => (
+            <article class="rounded-2xl border border-violet-500 bg-black px-4 py-4 shadow-[0_0_18px_rgba(168,85,247,0.08)]">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <h3 class="text-[1.8rem] font-bold leading-tight text-zinc-100">
+                    {item.name}
+                  </h3>
+                  <p class="mt-1 text-[1.3rem] leading-tight text-zinc-400">
+                    {item.type}
+                  </p>
+                </div>
+
+                <span class="rounded-md bg-violet-800 px-3 py-1 text-lg font-semibold text-violet-400">
+                  {item.distance}
+                </span>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div class="mt-6 rounded-2xl border border-violet-500 bg-violet-900/40 px-4 py-4">
+          <p class="text-[1.25rem] leading-tight text-zinc-300">
+            Réservez votre hébergement au plus tôt. Réductions possibles avec le code
+            FLYTAP2026.
+          </p>
+        </div>
+      </section>
+
+      <section class="mt-16">
+        <h2 class="text-fuchsia-500">Accès & Transport</h2>
+
+        <div class="mt-8 space-y-5">
+          {transports.map((item) => (
+            <article class="rounded-2xl border border-fuchsia-600 bg-black px-4 py-4 shadow-[0_0_18px_rgba(217,70,239,0.08)]">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <h3 class="text-[1.8rem] font-bold leading-tight text-zinc-100">
+                    {item.name}
+                  </h3>
+                  <p class="mt-1 text-[1.3rem] leading-tight text-zinc-400">
+                    {item.type}
+                  </p>
+                </div>
+
+                <span class="rounded-md bg-fuchsia-900 px-3 py-1 text-lg font-semibold text-fuchsia-500">
+                  {item.distance}
+                </span>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div class="mt-6 rounded-2xl border border-fuchsia-600 bg-fuchsia-900/40 px-4 py-4">
+          <p class="text-[1.25rem] leading-tight text-zinc-300">
+            Navettes gratuites disponibles depuis la gare et les principaux parkings. Privilégiez les transports en commun.
+          </p>
+        </div>
+      </section>
+
+      <section class="mt-16">
+        <h2 class="text-4xl font-bold text-blue-600">Questions fréquentes</h2>
+
+        <div class="mt-8 space-y-4">
+          {faq.map((item) => (
+            <details class="rounded-2xl border border-blue-900 bg-black px-4 py-4 shadow-[0_0_18px_rgba(37,99,235,0.08)]" open>
+              <summary class="flex cursor-pointer list-none items-start justify-between gap-4 text-[1.55rem] font-bold leading-tight text-zinc-100">
+                <span>{item.question}</span>
+                <span class="text-blue-500">−</span>
+              </summary>
+
+              <p class="mt-3 text-[1.3rem] leading-tight text-zinc-400">
+                {item.answer}
+              </p>
+            </details>
+          ))}
+        </div>
+      </section>
+    </div>
+  </section>
 </Layout>
